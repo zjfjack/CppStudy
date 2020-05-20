@@ -39,8 +39,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Abstract", "Abstract\Abstra
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Copying", "Copying\Copying.vcxproj", "{01BC19B3-20E7-422C-ACA9-0DD911D69722}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CopyConstructorAndAssignmentOperation", "CopyConstructorAndAssignmentOperation\CopyConstructorAndAssignmentOperation.vcxproj", "{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InitializerList", "InitializerList\InitializerList.vcxproj", "{CA87D297-F0EC-49BF-9E34-395F6133B165}"
 EndProject
 Global
@@ -195,14 +193,6 @@ Global
 		{01BC19B3-20E7-422C-ACA9-0DD911D69722}.Release|x64.Build.0 = Release|x64
 		{01BC19B3-20E7-422C-ACA9-0DD911D69722}.Release|x86.ActiveCfg = Release|Win32
 		{01BC19B3-20E7-422C-ACA9-0DD911D69722}.Release|x86.Build.0 = Release|Win32
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Debug|x64.ActiveCfg = Debug|x64
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Debug|x64.Build.0 = Debug|x64
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Debug|x86.ActiveCfg = Debug|Win32
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Debug|x86.Build.0 = Debug|Win32
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Release|x64.ActiveCfg = Release|x64
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Release|x64.Build.0 = Release|x64
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Release|x86.ActiveCfg = Release|Win32
-		{48E3FBD6-7DF8-4C3D-86BF-285C6FC927DA}.Release|x86.Build.0 = Release|Win32
 		{CA87D297-F0EC-49BF-9E34-395F6133B165}.Debug|x64.ActiveCfg = Debug|x64
 		{CA87D297-F0EC-49BF-9E34-395F6133B165}.Debug|x64.Build.0 = Debug|x64
 		{CA87D297-F0EC-49BF-9E34-395F6133B165}.Debug|x86.ActiveCfg = Debug|Win32
