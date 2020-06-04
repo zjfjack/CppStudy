@@ -1,5 +1,7 @@
 #include <iostream>
 
+#define PRINT_VARIABLE(Variable) std::cout << #Variable << std::endl << std::endl
+
 class String
 {
 public:
@@ -79,32 +81,91 @@ private:
     uint32_t m_size;
 };
 
-class Entity
+class EntityByValue
 {
 public:
-                                 // copied from const String& to String
-    Entity(const String& name) : m_Name(name) {}
+    EntityByValue(String name) : m_Name(name) {}
+private:
+    String m_Name;
+};
 
-                                   // has to use move otherwise it will be copied again
-    Entity(String&& name) : m_Name(std::move(name)) {}
+class EntityByValueAndMove
+{
+public:
+    EntityByValueAndMove(String name) : m_Name(std::move(name)) {}
+private:
+    String m_Name;
+};
 
-    void printName()
-    {
-        m_Name.print();
-    }
+class EntityByConstReference
+{
+public:
+    // copied from const String& to String
+    EntityByConstReference(const String& name) : m_Name(name) {}
+private:
+    String m_Name;
+};
+
+class EntityBylvalueReference
+{
+public:
+    EntityBylvalueReference(String& name) : m_Name(name) {}
+private:
+    String m_Name;
+};
+
+class EntityByrvalueReference
+{
+public:
+    // has to use move otherwise it will be copied again
+    EntityByrvalueReference(String&& name) 
+        : m_Name(std::move(name)) {}
 private:
     String m_Name;
 };
 
 int main()
 {
-    Entity entity(String("Cherno"));
-    entity.printName();
+    String string1("a");                      // constructor
+    String string2 = String("a");             // constructor
+    const String& string3 = String("a");      // constructor & bind
+    // String& string2 = String("a");
+    String& string4 = string1;                // bind
+    String string5 = std::move(string4);      // move constructor
+    string5 = string2;                        // copy assignment operator
+    string5 = std::move(string2);             // move assignment operator
+    String string = string5;                  // copy constructor
 
-    String string1("Hello");
-    String string2("World");
-    string1 = string2;
-    string1.print();
-    string1 = std::move(string2); //string2 will be destroyed after std::move`
-    string1.print();
+    std::cout << "------------- Constructor with different types of parameters ------------" << std::endl;
+    EntityByValue entityByValueWithValue(string);
+    PRINT_VARIABLE(entityByValueWithValue);                                                // copy(string to name) copy(name to m_Name) destory(name)                   Copy: 2  Move: 0
+    EntityByValue entityByValueWithrvalue(String("a"));
+    PRINT_VARIABLE(entityByValueWithrvalue);                                               // construct copy("a" to name(elided?)) copy(name to m_Name) destory(name)   Copy: 1(+1)  Move: 0
+
+    EntityByValueAndMove entityByValueAndMoveWithValue(string);
+    PRINT_VARIABLE(entityByValueAndMoveWithValue);                                         // copy(string to argument name) move(name to m_Name) destory(name)          Copy: 1  Move: 1
+    EntityByValueAndMove entityByValueAndMoveWithrvalue(String("a"));
+    PRINT_VARIABLE(entityByValueAndMoveWithrvalue);                                        // construct move("a" to name(elided?)) move(name to m_Name) destory(name)   Copy: 0  Move: 1(+1)
+
+    EntityByConstReference entityByConstReferenceWithValue(string);
+    PRINT_VARIABLE(entityByConstReferenceWithValue);                                       // bind(string to name) copy(name to m_Name)                                 Copy: 1  Move: 0
+    EntityByConstReference entityByConstReferenceWithrvalue(String("a"));                  // can bind a rvalue reference to const lvalue reference
+    PRINT_VARIABLE(entityByConstReferenceWithrvalue);                                      // construct bind("a" to name) copy(name to m_Name) destory(name)            Copy: 1  Move: 0
+
+    // EntityBylvalueReference entityBylvalueReferenceWithrvalue(String("a"));             // cannot take a rvalue reference with lvalue reference required
+    EntityBylvalueReference entityBylvalueReferenceWithvalue(string);
+    PRINT_VARIABLE(entityBylvalueReferenceWithvalue);                                      // bind(string to name) copy(name to m_Name)                                 Copy: 1  Move: 0
+
+    EntityByrvalueReference entityByrvalueReferenceWithrvalue(String("a"));
+    PRINT_VARIABLE(entityByrvalueReferenceWithrvalue);                                     // construct bind("a" to name) move(name to m_Name) destory(name(moved))     Copy: 0  Move: 1
+    // EntityByrvalueReference entityByrvalueReferenceWithvalue(string3);                  // cannot take a lvalue reference with rvalue reference required
+    EntityByrvalueReference entityByrvalueReferenceWithMovedlvalue(std::move(string));     // string3 will be destroyed after std::move
+    PRINT_VARIABLE(entityByrvalueReferenceWithMovedlvalue);                                // move(string(elided?)) bind(moved string to name) move(name to m_Name)     Copy: 0  Move: 1(+1)
+
+    // EntityBylvalueReference shouldn't be used because rvalue is not supported
+    // EntityByValue shouldn't be used because too many copies
+    // Choose EntityByConstReference & EntityByrvalueReference combination for best performance
+    // Choose EntityByValueAndMove for avoiding repetition 
+    // https://stackoverflow.com/a/51706522/5514452
+    // https://stackoverflow.com/a/10836286/5514452
 }
