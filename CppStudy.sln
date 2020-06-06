@@ -53,6 +53,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReferenceQualifier", "Refer
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Casting", "Casting\Casting.vcxproj", "{25E7DEC4-CE72-4529-AA83-7EEC8807A287}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NameSpace", "NameSpace\NameSpace.vcxproj", "{B3147879-C936-4701-B56B-B1E23AAA2087}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -261,6 +263,14 @@ Global
 		{25E7DEC4-CE72-4529-AA83-7EEC8807A287}.Release|x64.Build.0 = Release|x64
 		{25E7DEC4-CE72-4529-AA83-7EEC8807A287}.Release|x86.ActiveCfg = Release|Win32
 		{25E7DEC4-CE72-4529-AA83-7EEC8807A287}.Release|x86.Build.0 = Release|Win32
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Debug|x64.ActiveCfg = Debug|x64
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Debug|x64.Build.0 = Debug|x64
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Debug|x86.ActiveCfg = Debug|Win32
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Debug|x86.Build.0 = Debug|Win32
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Release|x64.ActiveCfg = Release|x64
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Release|x64.Build.0 = Release|x64
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Release|x86.ActiveCfg = Release|Win32
+		{B3147879-C936-4701-B56B-B1E23AAA2087}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
