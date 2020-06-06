@@ -46,6 +46,15 @@ int main()
     // double* d = static_cast<double*>(constPointer);          // uncompilable because bottom-level const
     // AnotherClass* ac3 = static_cast<AnotherClass*>(base);    // compilable but incorrect value is there but base is derived, should use dynamic_cast instead
 
+    std::string s1 = "test static_cast";
+    // move constructor not called and s1 is not removed
+    std::string&& r1 = static_cast<std::string&&>(s1);
+    // std::move() = static_cast<std::string&&> (std::move is actually static cast to rvalue reference and move constructor remove the rvalue reference data)
+    // std::string move constructor called here(std::string(std::string&&)) instead of std::move()
+    std::string r2 = static_cast<std::string&&>(s1);
+    std::string s2 = "test std::move";
+    std::string r3 = std::move(s2);
+
     // const_cast (only applicable for bottom-level const)
     double* d = const_cast<double*>(constPointer);              // correct but chaning d value is undefined
     // *d = 5;                                                  // constValue can be changed in VS but shouldn't do this
