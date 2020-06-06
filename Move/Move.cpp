@@ -127,11 +127,11 @@ private:
 int main()
 {
     String string1("a");                      // constructor
-    String string2 = String("a");             // constructor
+    String string2 = String("a");             // constructor + move constructor(elided) (move because move constructor is implemented, otherwise copy constructor will be called)
     const String& string3 = String("a");      // constructor & bind
-    // String& string2 = String("a");
+    // String& string2 = String("a");         // cannot bind a rvalue reference to lvalue reference
     String& string4 = string1;                // bind
-    String string5 = std::move(string4);      // move constructor
+    String string5 = std::move(string4);      // move constructor (not elided)
     string5 = string2;                        // copy assignment operator
     string5 = std::move(string2);             // move assignment operator
     String string = string5;                  // copy constructor
@@ -140,12 +140,12 @@ int main()
     EntityByValue entityByValueWithValue(string);
     PRINT_VARIABLE(entityByValueWithValue);                                                // copy(string to name) copy(name to m_Name) destory(name)                   Copy: 2  Move: 0
     EntityByValue entityByValueWithrvalue(String("a"));
-    PRINT_VARIABLE(entityByValueWithrvalue);                                               // construct copy("a" to name(elided?)) copy(name to m_Name) destory(name)   Copy: 1(+1)  Move: 0
+    PRINT_VARIABLE(entityByValueWithrvalue);                                               // construct move("a" to name(elided)) copy(name to m_Name) destory(name)    Copy: 1  Move: 0(+1)
 
     EntityByValueAndMove entityByValueAndMoveWithValue(string);
     PRINT_VARIABLE(entityByValueAndMoveWithValue);                                         // copy(string to argument name) move(name to m_Name) destory(name)          Copy: 1  Move: 1
     EntityByValueAndMove entityByValueAndMoveWithrvalue(String("a"));
-    PRINT_VARIABLE(entityByValueAndMoveWithrvalue);                                        // construct move("a" to name(elided?)) move(name to m_Name) destory(name)   Copy: 0  Move: 1(+1)
+    PRINT_VARIABLE(entityByValueAndMoveWithrvalue);                                        // construct move("a" to name(elided)) move(name to m_Name) destory(name)    Copy: 0  Move: 1(+1)
 
     EntityByConstReference entityByConstReferenceWithValue(string);
     PRINT_VARIABLE(entityByConstReferenceWithValue);                                       // bind(string to name) copy(name to m_Name)                                 Copy: 1  Move: 0
@@ -157,10 +157,10 @@ int main()
     PRINT_VARIABLE(entityBylvalueReferenceWithvalue);                                      // bind(string to name) copy(name to m_Name)                                 Copy: 1  Move: 0
 
     EntityByrvalueReference entityByrvalueReferenceWithrvalue(String("a"));
-    PRINT_VARIABLE(entityByrvalueReferenceWithrvalue);                                     // construct bind("a" to name) move(name to m_Name) destory(name(moved))     Copy: 0  Move: 1
+    PRINT_VARIABLE(entityByrvalueReferenceWithrvalue);                                     // construct bind("a" to name) move(name to m_Name) destory("a")             Copy: 0  Move: 1
     // EntityByrvalueReference entityByrvalueReferenceWithvalue(string3);                  // cannot take a lvalue reference with rvalue reference required
     EntityByrvalueReference entityByrvalueReferenceWithMovedlvalue(std::move(string));     // string3 will be destroyed after std::move
-    PRINT_VARIABLE(entityByrvalueReferenceWithMovedlvalue);                                // move(string(elided?)) bind(moved string to name) move(name to m_Name)     Copy: 0  Move: 1(+1)
+    PRINT_VARIABLE(entityByrvalueReferenceWithMovedlvalue);                                // bind(String&& string to name) move(name&string to m_Name)                 Copy: 0  Move: 1
 
     // EntityBylvalueReference shouldn't be used because rvalue is not supported
     // EntityByValue shouldn't be used because too many copies
